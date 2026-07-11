@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { type MotionValue, useMotionValueEvent } from 'motion/react'
+import { type MotionValue, useMotionValueEvent, useReducedMotion } from 'motion/react'
 
 type Props = {
   src: string
@@ -29,11 +29,12 @@ export function ScrollVideo({ src, progress, className, poster, range }: Props) 
   const raf = useRef<number>(0)
   const duration = useRef(0)
   const [near, setNear] = useState(false)
+  const reduceMotion = useReducedMotion()
 
   // only pull the (heavy, all-intra) video once the section is near the viewport
   useEffect(() => {
     const v = videoRef.current
-    if (!v) return
+    if (!v || reduceMotion) return
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -45,18 +46,18 @@ export function ScrollVideo({ src, progress, className, poster, range }: Props) 
     )
     io.observe(v)
     return () => io.disconnect()
-  }, [])
+  }, [reduceMotion])
 
   useEffect(() => {
     const v = videoRef.current
-    if (!v || !near) return
+    if (!v || !near || reduceMotion) return
     const onMeta = () => {
       duration.current = v.duration || 0
     }
     v.addEventListener('loadedmetadata', onMeta)
     v.load()
     return () => v.removeEventListener('loadedmetadata', onMeta)
-  }, [src, near])
+  }, [src, near, reduceMotion])
 
   useMotionValueEvent(progress, 'change', (p) => {
     target.current = Math.min(Math.max(p, 0), 1)
@@ -65,7 +66,7 @@ export function ScrollVideo({ src, progress, className, poster, range }: Props) 
   useEffect(() => {
     const loop = () => {
       const v = videoRef.current
-      if (v && duration.current) {
+      if (!reduceMotion && v && duration.current) {
         current.current += (target.current - current.current) * 0.14
         const [r0, r1] = range ?? [0, 1]
         const frac = r0 + current.current * (r1 - r0)
@@ -85,17 +86,17 @@ export function ScrollVideo({ src, progress, className, poster, range }: Props) 
     raf.current = requestAnimationFrame(loop)
     return () => cancelAnimationFrame(raf.current)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [reduceMotion, range])
 
   return (
     <video
       ref={videoRef}
       className={className}
-      src={near ? src : undefined}
+      src={near && !reduceMotion ? src : undefined}
       poster={poster}
       muted
       playsInline
-      preload={near ? 'auto' : 'none'}
+      preload={near && !reduceMotion ? 'auto' : 'none'}
       webkit-playsinline="true"
     />
   )

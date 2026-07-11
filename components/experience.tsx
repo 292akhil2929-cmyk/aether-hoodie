@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import { collections } from '@/lib/collections'
 import { SmoothScroll } from './smooth-scroll'
 import { CustomCursor } from './custom-cursor'
@@ -12,12 +13,17 @@ import { Footer } from './footer'
 import { ScrollProgress } from './scroll-progress'
 import { Marquee } from './marquee'
 import { F1Section } from './sections/f1-section'
-import { CarTransit } from './sections/car-transit'
 import { AnimeSection } from './sections/anime-section'
 import { CarsSection } from './sections/cars-section'
 import { EmiratiSection } from './sections/emirati-section'
 import { FifaSection } from './sections/fifa-section'
 import { WorldBridge } from './sections/world-bridge'
+import { CartProvider } from './cart'
+
+const CarTransit = dynamic(() => import('./sections/car-transit').then((module) => module.CarTransit), {
+  ssr: false,
+  loading: () => <div className="h-[120vh] bg-black" aria-hidden="true" />,
+})
 
 const DEFAULT_ACCENT = '#e8eaee'
 
@@ -29,7 +35,7 @@ export function Experience() {
   const activeAccent = hoverAccent ?? accent
 
   return (
-    <>
+    <CartProvider>
       <Loader onDone={() => setLoaded(true)} />
       <SmoothScroll />
       <CustomCursor accent={activeAccent} />
@@ -49,7 +55,7 @@ export function Experience() {
         <Hero />
 
         <Marquee
-          items={['Wear Your World', 'Limited Drops', 'Cinematic Couture', 'Æther Atelier']}
+          items={['Cut with intent', 'Numbered editions', 'Made for the after-hours', 'ÆTHER atelier']}
           baseVelocity={2.5}
         />
 
@@ -67,12 +73,12 @@ export function Experience() {
         <FifaSection c={collections[4]} onEnter={setAccent} />
 
         <Marquee
-          items={['Sold Out In Minutes', 'Numbered', 'Sealed', 'Unrepeatable']}
+          items={['Limited quantities', 'Numbered pieces', 'Considered details', 'No reruns']}
           baseVelocity={3.5}
         />
 
         <Footer />
       </main>
-    </>
+    </CartProvider>
   )
 }

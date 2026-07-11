@@ -106,10 +106,10 @@ export function CollectionsGrid({ onHover }: { onHover: (accent: string | null) 
           transition={{ duration: 0.8 }}
           className="text-[11px] uppercase tracking-[0.4em] text-muted-foreground"
         >
-          Five Worlds — One Wardrobe
+          Five studies · one point of view
         </motion.span>
         <h2 className="display mt-4 flex flex-wrap justify-center gap-x-4 text-5xl text-chrome sm:text-7xl">
-          {['CHOOSE', 'YOUR', 'UNIVERSE'].map((word, i) => (
+          {['FIND', 'YOUR', 'PIECE'].map((word, i) => (
             <motion.span
               key={word}
               initial={{ opacity: 0, y: 60, rotateX: -60 }}

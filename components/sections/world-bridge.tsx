@@ -99,7 +99,7 @@ export function WorldBridge({
             WebkitTextStroke: `2px ${to.accent}55`,
             color: 'transparent',
           }}
-          className="display pointer-events-none absolute select-none whitespace-nowrap text-[18vw] leading-none"
+          className="outline-fallback display pointer-events-none absolute select-none whitespace-nowrap text-[18vw] leading-none"
           aria-hidden="true"
         >
           {to.name.toUpperCase()}

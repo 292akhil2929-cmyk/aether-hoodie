@@ -7,10 +7,22 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const bebas = Bebas_Neue({ weight: '400', subsets: ['latin'], variable: '--font-bebas' })
 
 export const metadata: Metadata = {
-  title: 'ÆTHER — We Don\'t Sell Hoodies. We Sell Identities.',
+  metadataBase: new URL('https://aether-hoodie.vercel.app'),
+  title: 'ÆTHER atelier — Limited hoodies, designed in Dubai',
   description:
-    'A cinematic luxury hoodie experience. Five worlds — Formula 1, Anime, Exotic Cars, Emirati Culture, and the FIFA World Cup Limited Edition.',
-  generator: 'v0.app',
+    'ÆTHER creates numbered hoodies with a cinematic point of view. Five limited studies, designed in Dubai and released worldwide.',
+  alternates: { canonical: '/' },
+  openGraph: {
+    title: 'ÆTHER atelier',
+    description: 'Limited hoodies, designed in Dubai and released worldwide.',
+    url: '/',
+    siteName: 'ÆTHER atelier',
+    images: [{ url: '/media/hoodie-hero.png', width: 1200, height: 1200, alt: 'ÆTHER Apex GP hoodie' }],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: { card: 'summary_large_image', title: 'ÆTHER atelier', description: 'Limited hoodies, designed in Dubai and released worldwide.', images: ['/media/hoodie-hero.png'] },
+  robots: { index: true, follow: true },
 }
 
 export const viewport: Viewport = {

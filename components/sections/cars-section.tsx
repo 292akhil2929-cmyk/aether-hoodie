@@ -37,6 +37,7 @@ function TwoActBackdrop({ progress }: { progress: MotionValue<number> }) {
   const p1 = useTransform(progress, [0, 0.5], [0, 1], { clamp: true })
   const p2 = useTransform(progress, [0.5, 1], [0, 1], { clamp: true })
   const fade = useTransform(progress, [0.46, 0.54], [0, 1])
+  const dip = useTransform(progress, [0.45, 0.49, 0.51, 0.55], [0, 0.82, 0.82, 0])
 
   return (
     <div className="absolute inset-0">
@@ -52,6 +53,7 @@ function TwoActBackdrop({ progress }: { progress: MotionValue<number> }) {
           className="h-full w-full object-cover"
         />
       </motion.div>
+      <motion.div style={{ opacity: dip }} className="pointer-events-none absolute inset-0 bg-black" aria-hidden="true" />
     </div>
   )
 }
