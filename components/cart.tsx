@@ -24,7 +24,7 @@ type CartContextValue = {
 }
 
 const CartContext = createContext<CartContextValue | null>(null)
-const STORAGE_KEY = 'aether-atelier-cart'
+const STORAGE_KEY = 'terrain-studio-cart'
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([])
@@ -85,8 +85,8 @@ function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity } = useCart()
   const total = items.reduce((sum, item) => sum + Number(item.price.replace(/[^\d.]/g, '')) * item.quantity, 0)
   const enquiry = items.length
-    ? `mailto:studio@aetheratelier.com?subject=${encodeURIComponent('ÆTHER atelier request')}&body=${encodeURIComponent(`Hello ÆTHER,\n\nI would like to enquire about:\n${items.map((item) => `${item.quantity} × ${item.name}`).join('\n')}\n\nThank you.`)}`
-    : 'mailto:studio@aetheratelier.com?subject=ÆTHER%20atelier%20request'
+    ? `mailto:studio@terrain.studio?subject=${encodeURIComponent('TERRAIN studio request')}&body=${encodeURIComponent(`Hello TERRAIN,\n\nI would like to enquire about:\n${items.map((item) => `${item.quantity} × ${item.name}`).join('\n')}\n\nThank you.`)}`
+    : 'mailto:studio@terrain.studio?subject=TERRAIN%20studio%20request'
 
   return (
     <AnimatePresence>
@@ -134,7 +134,7 @@ function CartDrawer() {
                         <img src={item.image} alt="" className="h-full w-full object-contain p-2" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-[10px] uppercase tracking-[0.25em]" style={{ color: item.accent }}>ÆTHER atelier</p>
+                        <p className="text-[10px] uppercase tracking-[0.25em]" style={{ color: item.accent }}>TERRAIN studio</p>
                         <p className="mt-1 text-sm font-medium text-white">{item.name}</p>
                         <div className="mt-3 flex items-center justify-between">
                           <div className="flex items-center rounded-full border border-white/15">
