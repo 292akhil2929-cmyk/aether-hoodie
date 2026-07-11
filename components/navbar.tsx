@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { ShoppingBag } from 'lucide-react'
 import { useCart } from './cart'
+import { AetherLogo } from './aether-logo'
 
 const links = [
   { label: 'Design Archive', href: '#designs' },
@@ -36,12 +37,15 @@ export function Navbar({ accent }: { accent: string }) {
         }`}
       >
         <a href="#top" onClick={(event) => { event.preventDefault(); scrollTo('top') }} className="group flex items-center gap-2" data-cursor-hover>
+          <AetherLogo wordmark className="h-7 w-[8.5rem] text-foreground transition-colors sm:w-36" />
+          {false &&
           <span
             className="display text-2xl leading-none transition-colors"
             style={{ color: 'var(--color-foreground)' }}
           >
             ÆTHER
           </span>
+          }
           <span
             className="h-1.5 w-1.5 rounded-full transition-colors"
             style={{ background: accent, boxShadow: `0 0 10px ${accent}` }}
