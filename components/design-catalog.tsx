@@ -16,7 +16,7 @@ export function DesignCatalog() {
   useEffect(() => {
     fetch('/designs/manifest.json')
       .then((response) => response.json())
-      .then((data: Design[]) => setDesigns(data))
+      .then((data: Design[]) => setDesigns(data.filter((design) => !design.category.toLowerCase().includes('anime'))))
       .catch(() => setDesigns([]))
   }, [])
 
@@ -33,7 +33,7 @@ export function DesignCatalog() {
         <div>
           <span className="text-[11px] uppercase tracking-[0.4em] text-muted-foreground">The design archive</span>
           <h2 className="display mt-3 text-6xl text-chrome sm:text-8xl">FIND YOUR CUT</h2>
-          <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">Five hundred-plus studies in colour, craft and attitude. Save the one that feels like yours.</p>
+          <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">Hundreds of studies in colour, craft and attitude. Save the one that feels like yours.</p>
         </div>
         <div className="flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-white/45">
           <span className="h-2 w-2 rounded-full bg-[#ff2d2d] shadow-[0_0_12px_#ff2d2d]" />
