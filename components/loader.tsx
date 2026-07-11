@@ -8,24 +8,43 @@ export function Loader({ onDone }: { onDone: () => void }) {
   const [gone, setGone] = useState(false)
 
   useEffect(() => {
-    const start = performance.now()
-    const dur = 2200
-    let raf = 0
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / dur)
-      const eased = 1 - Math.pow(1 - t, 3)
-      setProgress(Math.round(eased * 100))
-      if (t < 1) {
-        raf = requestAnimationFrame(tick)
-      } else {
-        setTimeout(() => {
+    let alive = true
+    const started = performance.now()
+    const videoReady = new Promise<void>((resolve) => {
+      const video = document.createElement('video')
+      video.preload = 'metadata'
+      video.muted = true
+      video.src = '/media/scrub-scroll-f1.mp4'
+      video.onloadedmetadata = () => resolve()
+      video.onerror = () => resolve()
+    })
+    const assets = [
+      document.fonts?.ready ?? Promise.resolve(),
+      fetch('/media/hoodie-f1.glb', { method: 'HEAD' }).catch(() => undefined),
+      videoReady,
+    ]
+
+    const ready = async () => {
+      setProgress(12)
+      let complete = 0
+      await Promise.all(assets.map(async (asset) => {
+        await asset
+        complete += 1
+        if (alive) setProgress(12 + complete * 26)
+      }))
+      const remaining = Math.max(0, 850 - (performance.now() - started))
+      window.setTimeout(() => {
+        if (!alive) return
+        setProgress(100)
+        window.setTimeout(() => {
+          if (!alive) return
           setGone(true)
-          setTimeout(onDone, 900)
-        }, 350)
-      }
+          window.setTimeout(onDone, 700)
+        }, 220)
+      }, remaining)
     }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
+    void ready()
+    return () => { alive = false }
   }, [onDone])
 
   return (
