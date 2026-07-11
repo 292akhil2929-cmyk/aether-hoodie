@@ -19,6 +19,7 @@ import { EmiratiSection } from './sections/emirati-section'
 import { FifaSection } from './sections/fifa-section'
 import { WorldBridge } from './sections/world-bridge'
 import { CartProvider } from './cart'
+import { DesignCatalog } from './design-catalog'
 
 const CarTransit = dynamic(() => import('./sections/car-transit').then((module) => module.CarTransit), {
   ssr: false,
@@ -60,6 +61,7 @@ export function Experience() {
         />
 
         <CollectionsGrid onHover={setHoverAccent} />
+        <DesignCatalog />
 
         {/* five worlds — each a scroll-scrubbed cinematic, stitched with transitions */}
         <F1Section c={collections[0]} onEnter={setAccent} />
