@@ -6,8 +6,7 @@ import { ShoppingBag } from 'lucide-react'
 import { useCart } from './cart'
 
 const links = [
-  { label: 'Formula 1', href: '#f1' },
-  { label: 'Anime', href: '#anime' },
+  { label: 'Design Archive', href: '#designs' },
   { label: 'Exotic Cars', href: '#cars' },
   { label: 'Emirati', href: '#emirati' },
   { label: 'Final Edition', href: '#fifa' },

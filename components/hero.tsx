@@ -132,8 +132,8 @@ export function Hero() {
           className="absolute bottom-[6%] z-20 flex flex-col items-center gap-5"
         >
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <MagneticButton accent="#e8eaee" variant="solid" onClick={() => scrollTo('f1')}>
-              Enter the collection
+            <MagneticButton accent="#e8eaee" variant="solid" onClick={() => scrollTo('designs')}>
+              Browse all designs
             </MagneticButton>
             <MagneticButton accent="#e8eaee" variant="ghost" onClick={() => scrollTo('fifa')}>
               View the final edition

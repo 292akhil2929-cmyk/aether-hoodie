@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import dynamic from 'next/dynamic'
 import { collections } from '@/lib/collections'
 import { SmoothScroll } from './smooth-scroll'
 import { CustomCursor } from './custom-cursor'
@@ -12,19 +11,12 @@ import { CollectionsGrid } from './collections-grid'
 import { Footer } from './footer'
 import { ScrollProgress } from './scroll-progress'
 import { Marquee } from './marquee'
-import { F1Section } from './sections/f1-section'
-import { AnimeSection } from './sections/anime-section'
 import { CarsSection } from './sections/cars-section'
 import { EmiratiSection } from './sections/emirati-section'
 import { FifaSection } from './sections/fifa-section'
 import { WorldBridge } from './sections/world-bridge'
 import { CartProvider } from './cart'
 import { DesignCatalog } from './design-catalog'
-
-const CarTransit = dynamic(() => import('./sections/car-transit').then((module) => module.CarTransit), {
-  ssr: false,
-  loading: () => <div className="h-[120vh] bg-black" aria-hidden="true" />,
-})
 
 const DEFAULT_ACCENT = '#e8eaee'
 
@@ -53,6 +45,7 @@ export function Experience() {
       <Navbar accent={activeAccent} />
 
       <main className="relative z-10">
+        <DesignCatalog />
         <Hero />
 
         <Marquee
@@ -61,13 +54,8 @@ export function Experience() {
         />
 
         <CollectionsGrid onHover={setHoverAccent} />
-        <DesignCatalog />
 
-        {/* five worlds — each a scroll-scrubbed cinematic, stitched with transitions */}
-        <F1Section c={collections[0]} onEnter={setAccent} />
-        <CarTransit onEnter={setAccent} />
-        <AnimeSection c={collections[1]} onEnter={setAccent} />
-        <WorldBridge from={collections[1]} to={collections[2]} onEnter={setAccent} />
+        {/* the remaining worlds — each a scroll-scrubbed cinematic, stitched with transitions */}
         <CarsSection c={collections[2]} onEnter={setAccent} />
         <WorldBridge from={collections[2]} to={collections[3]} onEnter={setAccent} />
         <EmiratiSection c={collections[3]} onEnter={setAccent} />

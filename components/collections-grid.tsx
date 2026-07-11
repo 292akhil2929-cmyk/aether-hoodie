@@ -106,7 +106,7 @@ export function CollectionsGrid({ onHover }: { onHover: (accent: string | null) 
           transition={{ duration: 0.8 }}
           className="text-[11px] uppercase tracking-[0.4em] text-muted-foreground"
         >
-          Five studies · one point of view
+          Three studies · one point of view
         </motion.span>
         <h2 className="display mt-4 flex flex-wrap justify-center gap-x-4 text-5xl text-chrome sm:text-7xl">
           {['FIND', 'YOUR', 'PIECE'].map((word, i) => (
@@ -126,9 +126,7 @@ export function CollectionsGrid({ onHover }: { onHover: (accent: string | null) 
       </div>
 
       <div className="grid auto-rows-[22rem] grid-cols-1 gap-5 md:grid-cols-3">
-        <Card c={collections[0]} onHover={onHover} large />
-        <Card c={collections[1]} onHover={onHover} />
-        <Card c={collections[2]} onHover={onHover} />
+        <Card c={collections[2]} onHover={onHover} large />
         <Card c={collections[3]} onHover={onHover} />
         <Card c={collections[4]} onHover={onHover} />
       </div>
