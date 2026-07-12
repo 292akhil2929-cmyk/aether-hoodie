@@ -84,6 +84,27 @@ export function useCart() {
 function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity } = useCart()
   const total = items.reduce((sum, item) => sum + Number(item.price.replace(/[^\d.]/g, '')) * item.quantity, 0)
+  const [isCheckingOut, setIsCheckingOut] = useState(false)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
+
+  async function beginCheckout() {
+    if (!items.length || isCheckingOut) return
+    setIsCheckingOut(true)
+    setCheckoutError(null)
+    try {
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: items.map(({ name, quantity }) => ({ name, quantity })) }),
+      })
+      const result = await response.json() as { url?: string; error?: string }
+      if (!response.ok || !result.url) throw new Error(result.error || 'Checkout is unavailable right now.')
+      window.location.assign(result.url)
+    } catch (error) {
+      setCheckoutError(error instanceof Error ? error.message : 'Checkout is unavailable right now.')
+      setIsCheckingOut(false)
+    }
+  }
   const enquiry = items.length
     ? `mailto:studio@terrain.studio?subject=${encodeURIComponent('TERRAIN studio request')}&body=${encodeURIComponent(`Hello TERRAIN,\n\nI would like to enquire about:\n${items.map((item) => `${item.quantity} × ${item.name}`).join('\n')}\n\nThank you.`)}`
     : 'mailto:studio@terrain.studio?subject=TERRAIN%20studio%20request'
@@ -153,10 +174,12 @@ function CartDrawer() {
 
             <div className="mt-6 border-t border-white/10 pt-5">
               <div className="flex justify-between text-sm text-white/65"><span>Estimated total</span><span className="text-white">${total.toLocaleString()}</span></div>
-              <a href={enquiry} className="mt-5 flex w-full items-center justify-center rounded-full bg-white px-6 py-4 text-xs font-semibold uppercase tracking-[0.24em] text-black transition-transform hover:scale-[1.01]">
-                Enquire about this selection
-              </a>
-              <p className="mt-3 text-center text-[10px] leading-relaxed text-white/40">Each piece is released in limited quantities. An atelier concierge will confirm availability.</p>
+              <button disabled={!items.length || isCheckingOut} onClick={beginCheckout} className="mt-5 flex w-full items-center justify-center rounded-full bg-white px-6 py-4 text-xs font-semibold uppercase tracking-[0.24em] text-black transition-transform hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-40">
+                {isCheckingOut ? 'Opening secure checkout' : 'Secure checkout'}
+              </button>
+              {checkoutError && <p role="alert" className="mt-3 text-center text-[11px] leading-relaxed text-amber-200/80">{checkoutError}</p>}
+              <a href="mailto:studio@terrain.studio?subject=TERRAIN%20studio%20request" className="mt-3 block text-center text-[10px] uppercase tracking-[0.18em] text-white/45 transition hover:text-white">Prefer a studio order? Email us</a>
+              <p className="mt-3 text-center text-[10px] leading-relaxed text-white/40">Taxes and shipping are confirmed securely at checkout.</p>
             </div>
           </motion.aside>
         </>

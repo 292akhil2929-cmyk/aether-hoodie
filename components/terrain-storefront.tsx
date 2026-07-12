@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { ArrowUpRight, Check, ChevronRight, ShoppingBag, X } from 'lucide-react'
 import { CartProvider, useCart } from './cart'
 import { terrainProducts, type TerrainProduct } from '@/lib/terrain-catalog'
+import { GoogleAccountButton } from './google-account-button'
 
 const products = terrainProducts
 const sizes = ['XS', 'S', 'M', 'L', 'XL']
@@ -19,7 +20,7 @@ function Store() {
     <header className="sticky top-0 z-40 border-b border-white/10 bg-[#080808]/85 px-4 backdrop-blur-xl"><nav className="mx-auto flex h-20 max-w-[1500px] items-center justify-between">
       <a href="#top" className="terrain-wordmark" aria-label="Terrain home"><span className="terrain-mark">⌁</span>TERRAIN</a>
       <div className="hidden items-center gap-7 text-[10px] font-medium uppercase tracking-[0.2em] text-white/55 md:flex"><a href="#collection" className="hover:text-white">Collection</a><a href="#ethos" className="hover:text-white">Field notes</a><span className="text-white">Dubai / Worldwide</span></div>
-      <button onClick={openCart} className="group flex items-center gap-3 rounded-full border border-white/15 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] transition hover:border-white hover:bg-white hover:text-black"><ShoppingBag className="h-4 w-4" />Bag <span className="grid h-5 min-w-5 place-items-center rounded-full bg-white/10 px-1 text-[9px] group-hover:bg-black group-hover:text-white">{count}</span></button>
+      <div className="flex items-center gap-2"><GoogleAccountButton /><button onClick={openCart} className="group flex items-center gap-3 rounded-full border border-white/15 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] transition hover:border-white hover:bg-white hover:text-black"><ShoppingBag className="h-4 w-4" />Bag <span className="grid h-5 min-w-5 place-items-center rounded-full bg-white/10 px-1 text-[9px] group-hover:bg-black group-hover:text-white">{count}</span></button></div>
     </nav></header>
     <main id="top" className="relative mx-auto max-w-[1500px] px-4 pb-24">
       <section className="grid min-h-[calc(100vh-5rem)] items-center gap-8 py-10 lg:grid-cols-[.84fr_1.16fr] lg:py-16"><div className="relative z-10 max-w-xl lg:pl-10"><motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="mb-6 text-[10px] font-semibold uppercase tracking-[0.34em] text-white/45">Terrain / Issue 001</motion.p><motion.h1 initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .1 }} className="terrain-title">WEAR A<br/><i>WORLD.</i></motion.h1><motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .2 }} className="mt-7 max-w-md text-base leading-relaxed text-white/60">Heavyweight hoodies made as places: light trails, weather systems, forgotten routes, and everything in between.</motion.p><motion.a initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .3 }} href="#collection" className="terrain-shine mt-9 inline-flex items-center gap-4 rounded-full bg-[#f5f2eb] px-6 py-4 text-[11px] font-bold uppercase tracking-[0.2em] text-black">Explore the drop <ArrowUpRight className="h-4 w-4" /></motion.a></div>
