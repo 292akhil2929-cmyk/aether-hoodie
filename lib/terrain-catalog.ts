@@ -8,7 +8,7 @@ export type TerrainProduct = {
   note: string
 }
 
-const selectedIds = [107, 106, 103, 99, 86, 73, 69, 56, 45, 35, 25, 26, 15, 13]
+const selectedIds = [107, 106, 103, 99, 73, 69, 56, 45, 26, 15, 13]
 
 const special: TerrainProduct[] = [
   { id: 'orbit', name: 'ORBIT / 01', world: 'Space capsule', price: 'AED 780', image: '/media/terrain-orbit-01.png', tone: '#90a5ff', note: 'Reflective contour ink, orbital foil ribbon, 480gsm brushed cotton.' },
