@@ -102,7 +102,7 @@ function Sakura({ progress }: { progress: MotionValue<number> }) {
   )
 
   return (
-    <motion.div style={{ opacity }} className="pointer-events-none absolute inset-0 z-[5] overflow-hidden" aria-hidden="true">
+    <motion.div style={{ opacity }} className="pointer-events-none absolute inset-0 z-[4] overflow-hidden" aria-hidden="true">
       {petals.map((pt, i) => (
         <span
           key={i}

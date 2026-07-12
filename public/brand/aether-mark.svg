@@ -1,0 +1,9 @@
+<svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">ÆTHER mark</title>
+  <desc id="desc">An interlocked A and horizon symbol for ÆTHER</desc>
+  <path d="M120 18L207 68V172L120 222L33 172V68L120 18Z" stroke="currentColor" stroke-width="9" stroke-linejoin="round"/>
+  <path d="M65 158L120 62L175 158" stroke="currentColor" stroke-width="12" stroke-linecap="square" stroke-linejoin="round"/>
+  <path d="M88 118H175" stroke="currentColor" stroke-width="12" stroke-linecap="square"/>
+  <path d="M75 158H188" stroke="currentColor" stroke-width="12" stroke-linecap="square"/>
+  <circle cx="120" cy="118" r="9" fill="currentColor"/>
+</svg>

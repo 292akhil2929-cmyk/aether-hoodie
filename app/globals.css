@@ -56,7 +56,7 @@ body {
 
 /* utility: chrome / silver text gradient */
 .text-chrome {
-  background: linear-gradient(180deg, #ffffff 0%, #b8bcc4 45%, #6c6f76 55%, #dfe2e8 100%);
+  background: linear-gradient(118deg, #fff 2%, #d5d8df 28%, #8e929b 48%, #f4f5f7 68%, #aeb2bb 95%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -64,7 +64,7 @@ body {
 
 .display {
   font-family: var(--font-display);
-  letter-spacing: 0.01em;
+  letter-spacing: 0.015em;
   line-height: 0.9;
 }
 
@@ -98,6 +98,25 @@ body {
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+@supports not (-webkit-text-stroke: 1px white) {
+  .outline-fallback { color: rgba(255,255,255,0.14) !important; }
+}
+
+.terrain-grid { background-image: radial-gradient(rgba(255,255,255,.18) .7px, transparent .7px); background-size: 18px 18px; mask-image: linear-gradient(to bottom, black, transparent 62%); }
+.terrain-wordmark { display: inline-flex; align-items: center; gap: .55rem; font-size: .85rem; font-weight: 800; letter-spacing: .23em; }
+.terrain-mark { display: grid; height: 1.7rem; width: 1.7rem; place-items: center; border: 1px solid rgba(255,255,255,.7); border-radius: 50%; font-size: .72rem; font-weight: 500; letter-spacing: 0; }
+.terrain-title { font-size: clamp(4.1rem, 10vw, 9.75rem); font-weight: 650; letter-spacing: -.085em; line-height: .78; }
+.terrain-title i { font-family: Georgia, serif; font-weight: 400; letter-spacing: -.11em; }
+.terrain-shine { position: relative; overflow: hidden; transition: transform .25s ease, box-shadow .25s ease; }
+.terrain-shine::after { content: ''; position: absolute; inset: -140% 55% -140% -55%; transform: rotate(22deg); background: rgba(255,255,255,.45); transition: transform .6s ease; }
+.terrain-shine:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(255,255,255,.12); }
+.terrain-shine:hover::after { transform: translateX(250%) rotate(22deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+  .custom-cursor-active, .custom-cursor-active * { cursor: auto !important; }
+}
 
 /* sakura petals drifting down the anime world */
 @keyframes sakura-fall {

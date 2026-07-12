@@ -7,28 +7,17 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const bebas = Bebas_Neue({ weight: '400', subsets: ['latin'], variable: '--font-bebas' })
 
 export const metadata: Metadata = {
-  title: 'ÆTHER — We Don\'t Sell Hoodies. We Sell Identities.',
-  description:
-    'A cinematic luxury hoodie experience. Five worlds — Formula 1, Anime, Exotic Cars, Emirati Culture, and the FIFA World Cup Limited Edition.',
-  generator: 'v0.app',
+  metadataBase: new URL('https://aether-hoodie.vercel.app'),
+  title: 'TERRAIN — Wear a world',
+  description: 'TERRAIN makes collectible heavyweight hoodies from Dubai: worlds, weather systems, light and movement built into the garment.',
+  alternates: { canonical: '/' },
+  openGraph: { title: 'TERRAIN — Wear a world', description: 'Limited collectible hoodies, designed in Dubai and released worldwide.', url: '/', siteName: 'TERRAIN', images: [{ url: '/media/terrain-orbit-01.png', width: 1024, height: 1536, alt: 'TERRAIN Orbit hoodie' }], locale: 'en_US', type: 'website' },
+  twitter: { card: 'summary_large_image', title: 'TERRAIN — Wear a world', description: 'Limited collectible hoodies from Dubai.', images: ['/media/terrain-orbit-01.png'] },
+  robots: { index: true, follow: true },
 }
 
-export const viewport: Viewport = {
-  themeColor: '#050505',
-  colorScheme: 'dark',
-}
+export const viewport: Viewport = { themeColor: '#080808', colorScheme: 'dark' }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
-  return (
-    <html lang="en" className={`${inter.variable} ${bebas.variable} bg-background`}>
-      <body className="antialiased bg-background text-foreground">
-        {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
-      </body>
-    </html>
-  )
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return <html lang="en" className={`${inter.variable} ${bebas.variable} bg-background`}><body className="antialiased bg-background text-foreground">{children}{process.env.NODE_ENV === 'production' && <Analytics />}</body></html>
 }

@@ -11,10 +11,9 @@ import { ChevronDown } from 'lucide-react'
 const ModelViewer = dynamic(() => import('./model-viewer'), {
   ssr: false,
   loading: () => (
-    <div className="flex h-full w-full items-center justify-center">
-      <span className="text-[10px] uppercase tracking-[0.4em] text-white/40">
-        Loading the atelier…
-      </span>
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
+      <div className="h-[76%] w-[58%] rounded-[42%_42%_16%_16%] border border-white/10 bg-gradient-to-b from-white/10 to-white/[0.02] blur-[1px]" />
+      <span className="absolute bottom-[14%] text-[10px] uppercase tracking-[0.4em] text-white/35">Preparing the piece</span>
     </div>
   ),
 })
@@ -66,7 +65,7 @@ export function Hero() {
         {/* headline */}
         <motion.div
           style={{ y: titleY, opacity: titleOpacity }}
-          className="pointer-events-none absolute top-[12%] z-20 px-4 text-center"
+          className="pointer-events-none absolute top-[10%] z-20 px-4 text-center"
         >
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -74,32 +73,32 @@ export function Hero() {
             transition={{ delay: 0.2 }}
             className="mb-4 text-[11px] uppercase tracking-[0.5em] text-muted-foreground"
           >
-            Aether Atelier — Est. 2026
+            ÆTHER atelier · Dubai / worldwide
           </motion.p>
           <h1 className="display text-balance text-5xl leading-[0.85] sm:text-7xl md:text-8xl lg:text-[7rem]">
-            <span className="block text-chrome">WE DON&apos;T SELL HOODIES.</span>
-            <span className="block text-chrome">WE SELL IDENTITIES.</span>
+            <span className="block text-chrome">CUT FOR THE</span>
+            <span className="block text-chrome">STORIES YOU KEEP.</span>
           </h1>
         </motion.div>
 
         {/* interactive 3D hoodie — drag to spin, mouse parallax, slow auto-rotate */}
         <motion.div
           style={{ scale: stageScale, y: stageY, opacity: stageOpacity }}
-          className="relative z-10 mt-10 flex w-full items-center justify-center"
+          className="relative z-10 mt-2 flex w-full items-center justify-center md:mt-6"
         >
           <div
             className="absolute h-[52vh] w-[52vh] max-w-[90vw] rounded-full opacity-70 blur-[100px]"
             style={{ background: 'radial-gradient(circle, rgba(255,45,45,0.30), rgba(120,20,20,0.12) 55%, transparent 75%)' }}
           />
-          <div className="relative z-10 h-[58vh] w-[min(92vw,640px)]">
+          <div className="relative z-10 h-[64vh] w-[min(96vw,760px)]">
             <ModelViewer
               url="/media/hoodie-f1.glb"
               width="100%"
               height="100%"
               modelXOffset={0}
               modelYOffset={-0.04}
-              defaultRotationX={70}
-              defaultRotationY={8}
+              defaultRotationX={0}
+              defaultRotationY={0}
               enableMouseParallax
               enableHoverRotation
               enableManualRotation
@@ -112,7 +111,7 @@ export function Hero() {
               fadeIn
               autoFrame
               autoRotate
-              autoRotateSpeed={0.35}
+              autoRotateSpeed={0.32}
             />
           </div>
         </motion.div>
@@ -120,7 +119,7 @@ export function Hero() {
         {/* drag hint */}
         <motion.span
           style={{ opacity: titleOpacity }}
-          className="pointer-events-none absolute bottom-[26%] z-20 flex items-center gap-2 text-[10px] uppercase tracking-[0.35em] text-white/40"
+          className="pointer-events-none absolute bottom-[21%] z-20 hidden items-center gap-2 text-[10px] uppercase tracking-[0.35em] text-white/40 sm:flex"
         >
           <span className="inline-block h-px w-6 bg-white/30" />
           Drag to rotate
@@ -130,14 +129,14 @@ export function Hero() {
         {/* buttons */}
         <motion.div
           style={{ opacity: titleOpacity }}
-          className="absolute bottom-[8%] z-20 flex flex-col items-center gap-6"
+          className="absolute bottom-[6%] z-20 flex flex-col items-center gap-5"
         >
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <MagneticButton accent="#e8eaee" variant="solid" onClick={() => scrollTo('f1')}>
-              Explore Collection
+            <MagneticButton accent="#e8eaee" variant="solid" onClick={() => scrollTo('designs')}>
+              Browse all designs
             </MagneticButton>
             <MagneticButton accent="#e8eaee" variant="ghost" onClick={() => scrollTo('fifa')}>
-              Limited Drop
+              View the final edition
             </MagneticButton>
           </div>
           <motion.div
@@ -155,5 +154,8 @@ export function Hero() {
 }
 
 function scrollTo(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  const target = document.getElementById(id)
+  const lenis = (window as Window & { __lenis?: { scrollTo: (target: HTMLElement, options: { duration: number; easing: (t: number) => number }) => void } }).__lenis
+  if (target && lenis) lenis.scrollTo(target, { duration: 1.15, easing: (t) => 1 - Math.pow(1 - t, 4) })
+  else target?.scrollIntoView({ behavior: 'smooth' })
 }

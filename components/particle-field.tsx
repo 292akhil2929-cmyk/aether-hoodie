@@ -38,6 +38,7 @@ export function ParticleField({
       r: Math.random() * 1.8 + 0.4,
     }))
 
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     let raf = 0
     const draw = () => {
       ctx.clearRect(0, 0, w, h)
@@ -64,7 +65,7 @@ export function ParticleField({
         ctx.fillStyle = `${color}${(0.5 * p.z).toFixed(2)})`
         ctx.fill()
       }
-      raf = requestAnimationFrame(draw)
+      if (!reduceMotion) raf = requestAnimationFrame(draw)
     }
     draw()
 

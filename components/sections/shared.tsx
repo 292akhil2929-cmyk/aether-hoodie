@@ -11,6 +11,7 @@ import {
 } from 'motion/react'
 import type { Collection } from '@/lib/collections'
 import { ScrollVideo } from '../scroll-video'
+import { useCart } from '../cart'
 
 /* ------------------------------------------------------------------ */
 /* WorldShell — tall scroll runway with a sticky cinematic viewport.   */
@@ -78,9 +79,10 @@ export function WorldShell({
           {background ? (
             background(scrollYProgress)
           ) : videoSrc ? (
-            <ScrollVideo
-              src={videoSrc}
-              progress={scrollYProgress}
+          <ScrollVideo
+            src={videoSrc}
+            progress={scrollYProgress}
+            poster={c.media}
               className="h-full w-full object-cover"
             />
           ) : (
@@ -206,6 +208,7 @@ export function ProductReveal({
   align?: 'left' | 'right'
   from?: number
 }) {
+  const { addItem } = useCart()
   const opacity = useTransform(progress, [from, from + 0.14], [0, 1])
   const y = useTransform(progress, [from, from + 0.18], [90, 0])
   const scale = useTransform(progress, [from, from + 0.18], [0.92, 1])
@@ -235,10 +238,11 @@ export function ProductReveal({
         </div>
         <button
           data-cursor-hover
+          onClick={() => addItem({ name: c.product.name, price: c.product.price, image: c.product.image, accent: c.accent })}
           className="mt-6 rounded-full px-8 py-3 text-xs font-medium uppercase tracking-[0.25em] text-black transition-transform hover:scale-105"
           style={{ background: c.accent, boxShadow: `0 0 40px ${c.glow}` }}
         >
-          Add to Bag — {c.product.price}
+          Add to selection — {c.product.price}
         </button>
       </div>
 

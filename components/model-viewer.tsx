@@ -1,7 +1,7 @@
 'use client'
 
 /* eslint-disable react/no-unknown-property */
-import { Suspense, useRef, useLayoutEffect, useEffect, useMemo } from 'react'
+import { Component, Suspense, useRef, useLayoutEffect, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Canvas, useFrame, useThree, invalidate } from '@react-three/fiber'
 import {
   OrbitControls,
@@ -11,6 +11,7 @@ import {
   Environment,
 } from '@react-three/drei'
 import * as THREE from 'three'
+import { useReducedMotion } from 'motion/react'
 
 const isTouch =
   typeof window !== 'undefined' &&
@@ -22,6 +23,20 @@ const PARALLAX_MAG = 0.05
 const PARALLAX_EASE = 0.12
 const HOVER_MAG = deg2rad(6)
 const HOVER_EASE = 0.15
+
+class CanvasErrorBoundary extends Component<{ fallback: ReactNode; children: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+  static getDerivedStateFromError() { return { failed: true } }
+  render() { return this.state.failed ? this.props.fallback : this.props.children }
+}
+
+function ModelFallback({ url }: { url: string }) {
+  return (
+    <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-[2rem] bg-gradient-to-b from-white/[0.07] to-transparent">
+      <img src={url.includes('hoodie') ? '/media/hoodie-f1.png' : '/media/ferrari-front.png'} alt="Collection preview" className="h-[86%] w-[86%] object-contain opacity-90" />
+    </div>
+  )
+}
 
 function Loader() {
   const { progress } = useProgress()
@@ -110,6 +125,7 @@ function ModelInner({
   const cPar = useRef({ x: 0, y: 0 })
   const tHov = useRef({ x: 0, y: 0 })
   const cHov = useRef({ x: 0, y: 0 })
+  const restingRotation = useRef({ x: initPitch, y: initYaw })
 
   // clone per instance — useGLTF caches one scene per url, and multiple
   // viewers (hero + F1 stage) must not mutate the same object graph
@@ -148,6 +164,7 @@ function ModelInner({
 
     g.getWorldPosition(pivotW.current)
     pivot.copy(pivotW.current)
+    restingRotation.current = { x: initPitch, y: initYaw }
     outer.current.rotation.set(initPitch, initYaw, 0)
 
     if (autoFrame && (camera as THREE.PerspectiveCamera).isPerspectiveCamera) {
@@ -198,8 +215,8 @@ function ModelInner({
       const dy = e.clientY - ly
       lx = e.clientX
       ly = e.clientY
-      outer.current.rotation.y += dx * ROTATE_SPEED
-      outer.current.rotation.x += dy * ROTATE_SPEED
+      restingRotation.current.y += dx * ROTATE_SPEED
+      restingRotation.current.x += dy * ROTATE_SPEED
       vel.current = { x: dx * ROTATE_SPEED, y: dy * ROTATE_SPEED }
       invalidate()
     }
@@ -229,7 +246,7 @@ function ModelInner({
     return () => window.removeEventListener('pointermove', mm)
   }, [enableMouseParallax, enableHoverRotation])
 
-  useFrame((_, dt) => {
+  useFrame((state, dt) => {
     let need = false
     cPar.current.x += (tPar.current.x - cPar.current.x) * PARALLAX_EASE
     cPar.current.y += (tPar.current.y - cPar.current.y) * PARALLAX_EASE
@@ -243,17 +260,18 @@ function ModelInner({
     ndc.y += yOff + cPar.current.y
     outer.current.position.copy(ndc.unproject(camera))
 
-    outer.current.rotation.x += cHov.current.x - phx
-    outer.current.rotation.y += cHov.current.y - phy
+    // Keep the front graphic as the resting pose; the motion is a subtle sway,
+    // not a showroom spin. Manual drag adjusts the resting angle permanently.
+    const sway = autoRotate && inViewRef.current ? Math.sin(state.clock.elapsedTime * autoRotateSpeed) * deg2rad(20) : 0
+    outer.current.rotation.x = restingRotation.current.x + cHov.current.x
+    outer.current.rotation.y = restingRotation.current.y + cHov.current.y + sway
 
-    // don't burn GPU auto-rotating a model nobody can see
     if (autoRotate && inViewRef.current) {
-      outer.current.rotation.y += autoRotateSpeed * dt
       need = true
     }
 
-    outer.current.rotation.y += vel.current.x
-    outer.current.rotation.x += vel.current.y
+    restingRotation.current.y += vel.current.x
+    restingRotation.current.x += vel.current.y
     vel.current.x *= INERTIA
     vel.current.y *= INERTIA
     if (Math.abs(vel.current.x) > 1e-4 || Math.abs(vel.current.y) > 1e-4)
@@ -334,9 +352,11 @@ export default function ModelViewer({
   onModelLoaded,
 }: ModelViewerProps) {
   useEffect(() => void useGLTF.preload(url), [url])
+  const reduceMotion = useReducedMotion()
   const pivot = useRef(new THREE.Vector3()).current
   const containerRef = useRef<HTMLDivElement>(null)
   const inViewRef = useRef(true)
+  const [contextLost, setContextLost] = useState(false)
 
   // pause auto-rotate renders while scrolled out of view
   useEffect(() => {
@@ -360,7 +380,8 @@ export default function ModelViewer({
       style={{ width, height, touchAction: 'pan-y pinch-zoom', position: 'relative' }}
       data-cursor-hover
     >
-      <Canvas
+      <CanvasErrorBoundary fallback={<ModelFallback url={url} />}>
+      {contextLost ? <ModelFallback url={url} /> : <Canvas
         frameloop="demand"
         dpr={[1, 1.5]}
         gl={{
@@ -373,6 +394,7 @@ export default function ModelViewer({
         onCreated={({ gl }) => {
           gl.toneMapping = THREE.ACESFilmicToneMapping
           gl.outputColorSpace = THREE.SRGBColorSpace
+          gl.domElement.addEventListener('webglcontextlost', () => setContextLost(true), { once: true })
         }}
         camera={{ fov: 50, position: [0, 0, camZ], near: 0.01, far: 100 }}
         style={{ touchAction: 'pan-y pinch-zoom', background: 'transparent' }}
@@ -402,7 +424,7 @@ export default function ModelViewer({
             enableManualZoom={enableManualZoom}
             autoFrame={autoFrame}
             fadeIn={fadeIn}
-            autoRotate={autoRotate}
+            autoRotate={autoRotate && !reduceMotion}
             autoRotateSpeed={autoRotateSpeed}
             inViewRef={inViewRef}
             onLoaded={onModelLoaded}
@@ -417,7 +439,8 @@ export default function ModelViewer({
             zoomEnabled={enableManualZoom}
           />
         )}
-      </Canvas>
+      </Canvas>}
+      </CanvasErrorBoundary>
     </div>
   )
 }

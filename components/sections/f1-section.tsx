@@ -6,6 +6,7 @@ import { motion, useTransform, useMotionValueEvent, type MotionValue } from 'mot
 import type { Collection } from '@/lib/collections'
 import { WorldShell, IntroTitle } from './shared'
 import { ScrollVideo } from '../scroll-video'
+import { useCart } from '../cart'
 
 const ModelViewer = dynamic(() => import('../model-viewer'), { ssr: false })
 
@@ -50,7 +51,8 @@ function DriveBackdrop({ progress }: { progress: MotionValue<number> }) {
         <ScrollVideo
           src="/media/scrub-scroll-f1.mp4"
           progress={videoProgress}
-          range={[0, 0.3]}
+          range={[0.03, 0.3]}
+          poster="/media/bg-f1.png"
           className="h-full w-full object-cover"
         />
       </motion.div>
@@ -90,6 +92,7 @@ function HoodieStage({ c, progress }: { c: Collection; progress: MotionValue<num
   const opacity = useTransform(progress, [0.55, 0.68], [0, 1])
   const y = useTransform(progress, [0.55, 0.72], [70, 0])
   const [active, setActive] = useState(false)
+  const { addItem } = useCart()
   useMotionValueEvent(progress, 'change', (v) => setActive(v > 0.55))
 
   return (
@@ -131,10 +134,11 @@ function HoodieStage({ c, progress }: { c: Collection; progress: MotionValue<num
           </div>
           <button
             data-cursor-hover
+            onClick={() => addItem({ name: c.product.name, price: c.product.price, image: c.product.image, accent: c.accent })}
             className="mt-7 rounded-full px-8 py-3 text-xs font-medium uppercase tracking-[0.25em] text-black transition-transform hover:scale-105"
             style={{ background: c.accent, boxShadow: `0 0 40px ${c.glow}` }}
           >
-            Add to Bag — {c.product.price}
+            Add to selection — {c.product.price}
           </button>
           <div className="mt-4 text-[10px] uppercase tracking-[0.35em] text-white/40">
             Drag the hoodie to inspect

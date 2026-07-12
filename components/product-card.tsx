@@ -4,12 +4,14 @@ import { useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring } from 'motion/react'
 import { MagneticButton } from './magnetic-button'
 import type { Collection } from '@/lib/collections'
+import { useCart } from './cart'
 
 const sizes = ['XS', 'S', 'M', 'L', 'XL']
 
 export function ProductCard({ c }: { c: Collection }) {
   const [size, setSize] = useState('M')
   const [color, setColor] = useState(c.product.colors[0])
+  const { addItem } = useCart()
   const ref = useRef<HTMLDivElement>(null)
   const rx = useMotionValue(0)
   const ry = useMotionValue(0)
@@ -117,8 +119,8 @@ export function ProductCard({ c }: { c: Collection }) {
           <span className="display text-4xl" style={{ color: c.accent }}>
             {c.product.price}
           </span>
-          <MagneticButton accent={c.accent} variant="solid">
-            Add to Bag
+          <MagneticButton accent={c.accent} variant="solid" onClick={() => addItem({ name: c.product.name, price: c.product.price, image: c.product.image, accent: c.accent })}>
+            Add to selection
           </MagneticButton>
         </div>
       </div>

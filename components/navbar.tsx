@@ -1,23 +1,23 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
-import { ShoppingBag, Volume2, VolumeX } from 'lucide-react'
+import { ShoppingBag } from 'lucide-react'
+import { useCart } from './cart'
+import { AetherLogo } from './aether-logo'
 
 const links = [
-  { label: 'Formula 1', href: '#f1' },
-  { label: 'Anime', href: '#anime' },
+  { label: 'Design Archive', href: '#designs' },
   { label: 'Exotic Cars', href: '#cars' },
   { label: 'Emirati', href: '#emirati' },
-  { label: 'World Cup', href: '#fifa' },
+  { label: 'Final Edition', href: '#fifa' },
 ]
 
 export function Navbar({ accent }: { accent: string }) {
   const { scrollY } = useScroll()
   const [hidden, setHidden] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [sound, setSound] = useState(false)
-  const [cart] = useState(3)
+  const { count: cart, openCart } = useCart()
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
     const prev = scrollY.getPrevious() ?? 0
@@ -36,13 +36,16 @@ export function Navbar({ accent }: { accent: string }) {
           scrolled ? 'glass' : 'bg-transparent'
         }`}
       >
-        <a href="#top" className="group flex items-center gap-2" data-cursor-hover>
+        <a href="#top" onClick={(event) => { event.preventDefault(); scrollTo('top') }} className="group flex items-center gap-2" data-cursor-hover>
+          <AetherLogo wordmark className="h-7 w-[8.5rem] text-foreground transition-colors sm:w-36" />
+          {false &&
           <span
             className="display text-2xl leading-none transition-colors"
             style={{ color: 'var(--color-foreground)' }}
           >
             ÆTHER
           </span>
+          }
           <span
             className="h-1.5 w-1.5 rounded-full transition-colors"
             style={{ background: accent, boxShadow: `0 0 10px ${accent}` }}
@@ -54,6 +57,7 @@ export function Navbar({ accent }: { accent: string }) {
             <a
               key={l.href}
               href={l.href}
+              onClick={(event) => { event.preventDefault(); scrollTo(l.href.slice(1)) }}
               data-cursor-hover
               className="group relative px-4 py-2 text-xs font-medium uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
             >
@@ -68,14 +72,7 @@ export function Navbar({ accent }: { accent: string }) {
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => setSound((s) => !s)}
-            data-cursor-hover
-            aria-label={sound ? 'Mute ambient sound' : 'Enable ambient sound'}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:text-foreground"
-          >
-            {sound ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
-          </button>
-          <button
+            onClick={openCart}
             data-cursor-hover
             aria-label="Open cart"
             className="relative flex h-9 items-center gap-2 rounded-full border border-border px-4 text-xs font-medium uppercase tracking-widest text-foreground transition-colors"
@@ -98,4 +95,14 @@ export function Navbar({ accent }: { accent: string }) {
       </nav>
     </motion.header>
   )
+}
+
+function scrollTo(id: string) {
+  const target = document.getElementById(id)
+  const lenis = (window as Window & { __lenis?: { scrollTo: (target: HTMLElement, options: { duration: number; easing: (t: number) => number }) => void } }).__lenis
+  if (target && lenis) {
+    lenis.scrollTo(target, { duration: 1.15, easing: (t) => 1 - Math.pow(1 - t, 4) })
+  } else {
+    target?.scrollIntoView({ behavior: 'smooth' })
+  }
 }
