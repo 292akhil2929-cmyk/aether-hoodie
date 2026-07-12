@@ -27,6 +27,7 @@ const stories: Record<number, string> = {
 const special: TerrainProduct[] = [
   { id: 'orbit', name: 'ORBIT / 01', world: 'Space capsule', price: 'AED 780', image: '/media/terrain-orbit-01.png', tone: '#90a5ff', note: 'Reflective contour ink, orbital foil ribbon, 480gsm brushed cotton.' },
   { id: 'breach', name: 'BREACH / 01', world: 'Colour study', price: 'AED 790', image: '/media/terrain-breach-01.png', tone: '#6dcdf1', note: 'The moment colour breaks through a controlled black surface. A single fracture becomes a route into cobalt, magenta and amber.' },
+  { id: 'moonriver', name: 'MOONRIVER / 01', world: 'World garment', price: 'AED 820', image: '/media/terrain-moonriver-01.png', tone: '#72e6f5', note: 'A cyan moon hangs above a city folded into emerald mountains. The pink river-road flows through the garment, carrying the whole world forward.' },
   { id: 'trails', name: 'LIGHT TRAILS', world: 'Selected concept', price: 'AED 720', image: '/catalog/terrain-approved-trails.png', tone: '#d7a66d', note: 'Long-exposure road lines rendered as a quiet, continuous chest graphic.' },
   { id: 'aurora', name: 'AURORA FLOW', world: 'Selected concept', price: 'AED 740', image: '/catalog/terrain-approved-aurora.png', tone: '#74e8d0', note: 'A fluid aurora ribbon moves across a deep black heavyweight fleece.' },
 ]
