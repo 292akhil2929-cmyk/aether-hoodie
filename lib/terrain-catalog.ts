@@ -15,7 +15,6 @@ const special: TerrainProduct[] = [
   { id: 'trails', name: 'LIGHT TRAILS', world: 'Selected concept', price: 'AED 720', image: '/catalog/terrain-approved-trails.png', tone: '#d7a66d', note: 'Long-exposure road lines rendered as a quiet, continuous chest graphic.' },
   { id: 'aurora', name: 'AURORA FLOW', world: 'Selected concept', price: 'AED 740', image: '/catalog/terrain-approved-aurora.png', tone: '#74e8d0', note: 'A fluid aurora ribbon moves across a deep black heavyweight fleece.' },
   { id: 'spectrum', name: 'SPECTRUM BREAK', world: 'Selected concept', price: 'AED 760', image: '/catalog/terrain-approved-spectrum.png', tone: '#ffcc51', note: 'Prismatic shards and a disciplined burst of spectrum colour.' },
-  { id: 'spotlight', name: 'SPOTLIGHT', world: 'Four-piece concept', price: 'AED 700', image: '/catalog/terrain-approved-spotlight.png', tone: '#d7e8ff', note: 'A single overhead beam turns the chest into a tiny stage.' },
 ]
 
 export const terrainProducts: TerrainProduct[] = [
