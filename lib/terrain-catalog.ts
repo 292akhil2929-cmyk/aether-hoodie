@@ -8,7 +8,7 @@ export type TerrainProduct = {
   note: string
 }
 
-const selectedIds = [107, 106, 103, 102, 101, 99, 96, 92, 93, 90, 86, 84, 76, 73, 72, 69, 70, 68, 61, 56, 51, 48, 45, 46, 44, 42, 39, 37, 38, 35, 33, 34, 28, 25, 26, 17, 14, 15, 13, 1]
+const selectedIds = [107, 106, 103, 102, 101, 99, 96, 92, 86, 73, 72, 69, 61, 56, 51, 45, 39, 38, 35, 34, 28, 25, 26, 17, 14, 15, 13, 1]
 
 const special: TerrainProduct[] = [
   { id: 'orbit', name: 'ORBIT / 01', world: 'Space capsule', price: 'AED 780', image: '/media/terrain-orbit-01.png', tone: '#90a5ff', note: 'Reflective contour ink, orbital foil ribbon, 480gsm brushed cotton.' },
@@ -17,13 +17,10 @@ const special: TerrainProduct[] = [
   { id: 'aurora', name: 'AURORA FLOW', world: 'Selected concept', price: 'AED 740', image: '/catalog/terrain-approved-aurora.png', tone: '#74e8d0', note: 'A fluid aurora ribbon moves across a deep black heavyweight fleece.' },
   { id: 'violet', name: 'VIOLET SYSTEM', world: 'Selected concept', price: 'AED 740', image: '/catalog/terrain-approved-violet.png', tone: '#e897f4', note: 'A violet colour story with a concentrated cosmic core.' },
   { id: 'spectrum', name: 'SPECTRUM BREAK', world: 'Selected concept', price: 'AED 760', image: '/catalog/terrain-approved-spectrum.png', tone: '#ffcc51', note: 'Prismatic shards and a disciplined burst of spectrum colour.' },
-  { id: 'crown', name: 'SOLAR CROWN', world: 'Selected concept', price: 'AED 760', image: '/catalog/terrain-approved-crown.png', tone: '#ff9138', note: 'A maximal sun-crown illustration for the statement end of the collection.' },
   { id: 'weather-mark', name: 'WEATHER MARK', world: 'Selected concept', price: 'AED 690', image: '/catalog/terrain-approved-weather.png', tone: '#d2d6dc', note: 'A nearly blank weather-grey hoodie with a small, considered embroidered signal.' },
   { id: 'frame', name: 'UNTITLED HUMAN', world: 'Selected concept', price: 'AED 700', image: '/catalog/terrain-approved-frame.png', tone: '#d9bc7d', note: 'Front and back concept: a quiet label and an empty gilded frame.' },
   { id: 'still-loading', name: 'STILL LOADING', world: 'Four-piece concept', price: 'AED 720', image: '/catalog/terrain-approved-still-loading.png', tone: '#c6a26b', note: 'A split garment study balancing a detailed dragon with a restrained loading cue.' },
   { id: 'spotlight', name: 'SPOTLIGHT', world: 'Four-piece concept', price: 'AED 700', image: '/catalog/terrain-approved-spotlight.png', tone: '#d7e8ff', note: 'A single overhead beam turns the chest into a tiny stage.' },
-  { id: 'snow-globe', name: 'SNOW GLOBE', world: 'Four-piece concept', price: 'AED 720', image: '/catalog/terrain-approved-snow-globe.png', tone: '#c8ddf1', note: 'A pocket-level winter city enclosed in a clear, graphic globe.' },
-  { id: 'half-drawn', name: 'HALF DRAWN', world: 'Four-piece concept', price: 'AED 720', image: '/catalog/terrain-approved-half-drawn.png', tone: '#eeeeee', note: 'A finished black fleece interrupted by a hand-rendered half.' },
 ]
 
 export const terrainProducts: TerrainProduct[] = [
